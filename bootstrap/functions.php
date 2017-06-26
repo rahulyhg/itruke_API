@@ -18,25 +18,28 @@ if (! function_exists('addRoute')) {
 	 *
 	 * TODO add a controller route
 	 */
-	function add_route ($name = 'index',$ctr = 'Data', ...$midle){
-		$app = app();
-		if ($ctr == 'Data') {
-			$path = $name;
-		} else {
-			$path = $ctr.'/'.$name;
-		}
+	function add_route ($ctr, ...$midle){
 		$ctr = ucfirst($ctr);
-		$app->group([
-			'middleware' => array_merge(['api'],$midle)
-		], function () use ($app, $path, $ctr, $name) {
-			$app->options($path, function () {
-				return response('', 200);
+		$app = app();
+		$methods = get_class_methods('App\Http\Controllers\\'.$ctr.'Controller');
+//		return dd($methods);
+		if ($methods) {
+			$app->group([
+				'middleware' => array_merge(['api'],$midle)
+			],function () use ($app, $methods, $ctr) {
+				foreach($methods as $v) {
+					$app->options(strtolower($ctr).'/'.strtolower(ltrim($v, 'get')), function () {
+						return response('', 200);
+					});
+					$actions = ['get', 'post', 'put', 'delete'];
+					foreach($actions as $a) {
+						if (strpos($v, $a) === 0) {
+							$app->get(strtolower($ctr).'/'.strtolower(ltrim($v, 'get')), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, 'get')));
+						}
+					}
+				}
 			});
-			$app->get($path, $ctr.'Controller@'.camel_case('get_'.$name));
-			$app->post($path, $ctr.'Controller@'.camel_case('post_'.$name));
-			$app->put($path, $ctr.'Controller@'.camel_case('put_'.$name));
-			$app->delete($path, $ctr.'Controller@'.camel_case('delete_'.$name));
-		});
+		}
 	}
 }
 
