@@ -32,6 +32,7 @@ if (! function_exists('addRoute')) {
 				$path = $ctr.'/'.$name;
 			}
 		}
+		$ctr = ucfirst($ctr);
 		$app->get($path, $ctr.'Controller@'.camel_case('get_'.$name));
 		$app->post($path, $ctr.'Controller@'.camel_case('post_'.$name));
 		$app->put($path, $ctr.'Controller@'.camel_case('put_'.$name));
