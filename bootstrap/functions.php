@@ -17,7 +17,7 @@ if (! function_exists('addRoute')) {
 	 *
 	 * TODO add a controller route
 	 */
-	function addRoute ($app,$name = null,$ctr = 'Data'){
+	function addRoute ($app,$name = null,$ctr = 'Data', ...$midle){
 		if (is_null($name) || $name == 'index') {
 			if ($ctr == 'Data') {
 				$path = '/';
@@ -34,7 +34,7 @@ if (! function_exists('addRoute')) {
 		}
 		$ctr = ucfirst($ctr);
 		$app->group([
-			'middleware' => ['api']
+			'middleware' => array_merge(['api'],$midle)
 		], function () use ($app, $path, $ctr, $name) {
 			$app->get($path, $ctr.'Controller@'.camel_case('get_'.$name));
 			$app->post($path, $ctr.'Controller@'.camel_case('post_'.$name));

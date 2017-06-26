@@ -15,8 +15,10 @@ class ApiMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->header('appid')){
-            return error('login', 403);
+        $appid = $request->header('appid');
+        $ruke = $request->header('ruke');
+        if ($appid != getenv('APPID') || $ruke != getenv('RUKE')) {
+            return error('Bye',403);
         }
         return $next($request);
     }
