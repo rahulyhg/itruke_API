@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class ExampleMiddleware
+class ApiMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,6 +15,9 @@ class ExampleMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if (! $request->header('appid')){
+            return error('login', 403);
+        }
         return $next($request);
     }
 }

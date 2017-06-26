@@ -33,10 +33,14 @@ if (! function_exists('addRoute')) {
 			}
 		}
 		$ctr = ucfirst($ctr);
-		$app->get($path, $ctr.'Controller@'.camel_case('get_'.$name));
-		$app->post($path, $ctr.'Controller@'.camel_case('post_'.$name));
-		$app->put($path, $ctr.'Controller@'.camel_case('put_'.$name));
-		$app->delete($path, $ctr.'Controller@'.camel_case('delete_'.$name));
+		$app->group([
+			'middleware' => ['api']
+		], function () use ($app, $path, $ctr, $name) {
+			$app->get($path, $ctr.'Controller@'.camel_case('get_'.$name));
+			$app->post($path, $ctr.'Controller@'.camel_case('post_'.$name));
+			$app->put($path, $ctr.'Controller@'.camel_case('put_'.$name));
+			$app->delete($path, $ctr.'Controller@'.camel_case('delete_'.$name));
+		});
 	}
 }
 
