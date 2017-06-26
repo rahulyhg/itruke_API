@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Domain;
 use Closure;
 
 class ApiMiddleware
@@ -15,10 +16,15 @@ class ApiMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if ($request->isMethod('OPTIONS')) {
+            return;
+        }
         $appid = $request->header('appid');
         $ruke = $request->header('ruke');
-        if ($appid != getenv('APPID') || $ruke != getenv('RUKE')) {
-            return error('Bye',403);
+        $domain = $request->header('origin');
+        $ret = Domain::where('domain', $domain)->where('appid', $appid)->where('ruke', $ruke)->where('status', 2)->first();
+        if (!$ret) {
+            return error('Bye', 401);
         }
         return $next($request);
     }

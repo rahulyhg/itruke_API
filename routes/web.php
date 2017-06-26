@@ -11,7 +11,6 @@
 |
 */
 // see function `addRoute` at app/bootstrap/functions.php
-
-addRoute($app);
-addRoute($app, 'nav');
-addRoute($app, null, 'admin');
+//add_route('nav');
+//add_route('test');
+add_route();

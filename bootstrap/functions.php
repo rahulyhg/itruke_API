@@ -14,28 +14,24 @@ if (! function_exists('addRoute')) {
 	 * @param $app
 	 * @param null $name
 	 * @param string $ctr
+	 * @param string $midle 中间件
 	 *
 	 * TODO add a controller route
 	 */
-	function addRoute ($app,$name = null,$ctr = 'Data', ...$midle){
-		if (is_null($name) || $name == 'index') {
-			if ($ctr == 'Data') {
-				$path = '/';
-			} else {
-				$path = $ctr;
-			}
-			$name = 'index';
+	function add_route ($name = 'index',$ctr = 'Data', ...$midle){
+		$app = app();
+		if ($ctr == 'Data') {
+			$path = $name;
 		} else {
-			if ($ctr == 'Data') {
-				$path = $name;
-			} else {
-				$path = $ctr.'/'.$name;
-			}
+			$path = $ctr.'/'.$name;
 		}
 		$ctr = ucfirst($ctr);
 		$app->group([
 			'middleware' => array_merge(['api'],$midle)
 		], function () use ($app, $path, $ctr, $name) {
+			$app->options($path, function () {
+				return response('', 200);
+			});
 			$app->get($path, $ctr.'Controller@'.camel_case('get_'.$name));
 			$app->post($path, $ctr.'Controller@'.camel_case('post_'.$name));
 			$app->put($path, $ctr.'Controller@'.camel_case('put_'.$name));
