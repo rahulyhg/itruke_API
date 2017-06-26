@@ -27,7 +27,7 @@ if (! function_exists('addRoute')) {
 			$name = 'index';
 		} else {
 			if ($ctr == 'Data') {
-				$path = $ctr;
+				$path = $name;
 			} else {
 				$path = $ctr.'/'.$name;
 			}

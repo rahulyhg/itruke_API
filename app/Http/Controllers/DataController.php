@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 class DataController extends Controller
 {
     function getNav () {
-        return response()->json('1345');
+        return success();
     }
 
     function getIndex () {
-        return 'index';
+        return error();
     }
 }

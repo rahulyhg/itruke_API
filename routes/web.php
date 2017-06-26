@@ -11,4 +11,5 @@
 |
 */
 // see function `addRoute` at app/bootstrap/functions.php
-addRoute($app);
+
+addRoute($app, 'nav');
