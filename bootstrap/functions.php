@@ -11,10 +11,8 @@
 
 if (! function_exists('addRoute')) {
 	/**
-	 * @param $app
-	 * @param null $name
 	 * @param string $ctr
-	 * @param string $midle 中间件
+	 * @param string midle
 	 *
 	 * TODO add a controller route
 	 */
@@ -22,7 +20,6 @@ if (! function_exists('addRoute')) {
 		$ctr = ucfirst($ctr);
 		$app = app();
 		$methods = get_class_methods('App\Http\Controllers\\'.$ctr.'Controller');
-//		return dd($methods);
 		if ($methods) {
 			$app->group([
 				'middleware' => array_merge(['api'],$midle)
@@ -34,7 +31,7 @@ if (! function_exists('addRoute')) {
 					$actions = ['get', 'post', 'put', 'delete'];
 					foreach($actions as $a) {
 						if (strpos($v, $a) === 0) {
-							$app->get(strtolower($ctr).'/'.strtolower(ltrim($v, 'get')), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, 'get')));
+							$app->$a(strtolower($ctr).'/'.strtolower(ltrim($v, 'get')), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, 'get')));
 						}
 					}
 				}
