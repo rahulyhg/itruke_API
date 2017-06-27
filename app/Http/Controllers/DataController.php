@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Nav;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
     function getNav (Request $request) {
-        return success(666);
+        return success(Nav::fetchList());
     }
 
     function postNav() {

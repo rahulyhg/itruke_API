@@ -20,16 +20,17 @@ class Nav extends Model
 		foreach($list as $l) {
 			$l->sub = self::subNav($l->id);
 		}
+		return $list;
 	}
 
 	static function subNav ($id) {
 		$list = self::where('pid', $id)->get();
-		if (!empty($list)) {
+		if (count($list)) {
 			foreach ($list as $l) {
 				$l->sub = self::subNav($l->id);
 			}
 			return $list;
 		}
-		return;
+		return [];
 	}
 }
