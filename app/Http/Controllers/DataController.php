@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nav;
+use App\Models\Posts;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -11,15 +12,7 @@ class DataController extends Controller
         return success(Nav::fetchList());
     }
 
-    function postNav() {
-        return success(456);
-    }
-
-    function getTest() {
-        return success('test indel');
-    }
-
-    function getIndex() {
-        return success('index');
+    function getPosts(Request $request) {
+        return success(Posts::paginate(10));
     }
 }
