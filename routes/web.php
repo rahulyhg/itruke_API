@@ -11,6 +11,4 @@
 |
 */
 // see function `addRoute` at app/bootstrap/functions.php
-//add_route('nav');
-//add_route('test');
 add_route('data');

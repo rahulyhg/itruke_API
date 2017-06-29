@@ -14,4 +14,10 @@ class Posts extends Model
 {
 	public $table = 'posts';
 	public $timestamps = false;
+	public $appends = ['tagsArr'];
+
+	function getTagsArrAttribute()
+	{
+		return Tag::find(json_decode($this->tags));
+	}
 }
