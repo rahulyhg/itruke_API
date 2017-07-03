@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 class DataController extends Controller
 {
     function getNav (Request $request) {
+        if (!empty($request->id)) {
+            return success(Nav::find($request->id));
+        }
         return success(Nav::fetchList());
     }
 
