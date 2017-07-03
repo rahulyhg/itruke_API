@@ -12,3 +12,4 @@
 */
 // see function `addRoute` at app/bootstrap/functions.php
 add_route('data');
+add_route('admin');

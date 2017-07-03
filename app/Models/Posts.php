@@ -14,10 +14,15 @@ class Posts extends Model
 {
 	public $table = 'posts';
 	public $timestamps = false;
-	public $appends = ['tagsArr'];
+	public $appends = ['tagsArr', 'navInfo'];
 
 	function getTagsArrAttribute()
 	{
 		return Tag::find(json_decode($this->tags));
+	}
+
+	function getNavInfoAttribute()
+	{
+		return Nav::find($this->navId);
 	}
 }
