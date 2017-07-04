@@ -24,7 +24,8 @@ class AdminController extends Controller
 	}
 
 	function getPosts(Request $request) {
-		return success(Posts::all());
+		$page_size = $request->input('page_size') ? $request->input('page_size') : 10;
+		return success(Posts::paginate($page_size));
 	}
 
 	function getTag(Request $request) {
