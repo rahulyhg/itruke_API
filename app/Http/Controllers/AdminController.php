@@ -25,12 +25,26 @@ class AdminController extends Controller
 
 	function getPosts(Request $request) {
 		$page_size = $request->input('page_size') ? $request->input('page_size') : 10;
+		$id = $request->input('id');
+		if (!empty($id)) {
+			return success(Posts::find($id));
+		}
 		return success(Posts::paginate($page_size));
 	}
 
 	function getTag(Request $request) {
+		$find = $request->input('find');
+		if (!empty($find)) {
+			return success(Tag::where('name', 'like', '%'.$find.'%')->get());
+		}
 		$id = $request->id;
 		$info = Tag::find($id);
 		return success($info);
+	}
+
+	function postTag(Request $request) {
+		$name = $request->input('name');
+		$id = Tag::where('name', '<>', $name)->insertGetId(['name' => $name]);
+		return success(['id' => $id]);
 	}
 }

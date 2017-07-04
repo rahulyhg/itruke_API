@@ -31,7 +31,7 @@ if (! function_exists('addRoute')) {
 					$actions = ['get', 'post', 'put', 'delete'];
 					foreach($actions as $a) {
 						if (strpos($v, $a) === 0) {
-							$app->$a(strtolower($ctr).'/'.strtolower(ltrim($v, 'get')), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, 'get')));
+							$app->$a(strtolower($ctr).'/'.strtolower(ltrim($v, $a)), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, $a)));
 						}
 					}
 				}
