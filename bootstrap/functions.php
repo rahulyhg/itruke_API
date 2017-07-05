@@ -25,13 +25,21 @@ if (! function_exists('addRoute')) {
 				'middleware' => array_merge(['api'],$midle)
 			],function () use ($app, $methods, $ctr) {
 				foreach($methods as $v) {
-					$app->options(strtolower($ctr).'/'.strtolower(ltrim($v, 'get')), function () {
-						return response('', 200);
-					});
 					$actions = ['get', 'post', 'put', 'delete'];
 					foreach($actions as $a) {
 						if (strpos($v, $a) === 0) {
-							$app->$a(strtolower($ctr).'/'.strtolower(ltrim($v, $a)), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, $a)));
+							$app->options(strtolower($ctr).'/'.snake_case(ltrim($v, $a)), function () {
+								return response('', 200);
+							});
+							break;
+						}
+					}
+					foreach($actions as $a) {
+						if (strpos($v, $a) === 0) {
+							$app->options(strtolower($ctr).'/'.snake_case(ltrim($v, $a)), function () {
+								return response('', 200);
+							});
+							$app->$a(strtolower($ctr).'/'.snake_case(ltrim($v, $a)), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, $a)));
 						}
 					}
 				}

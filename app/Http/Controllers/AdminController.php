@@ -23,6 +23,10 @@ class AdminController extends Controller
 		return success(Nav::fetchList());
 	}
 
+	function getNavList(Request $request) {
+		return success(Nav::all());
+	}
+
 	function getPosts(Request $request) {
 		$page_size = $request->input('page_size') ? $request->input('page_size') : 10;
 		$id = $request->input('id');
@@ -37,9 +41,12 @@ class AdminController extends Controller
 		if (!empty($find)) {
 			return success(Tag::where('name', 'like', '%'.$find.'%')->get());
 		}
-		$id = $request->id;
-		$info = Tag::find($id);
-		return success($info);
+		$id = $request->input('id');
+		if (!empty($id)) {
+			$info = Tag::find($id);
+			return success($info);
+		}
+		return success(Tag::all());
 	}
 
 	function postTag(Request $request) {
