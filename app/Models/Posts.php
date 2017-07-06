@@ -14,7 +14,7 @@ class Posts extends Model
 {
 	public $table = 'posts';
 	public $timestamps = false;
-	public $appends = ['tagsArr', 'navInfo'];
+	public $appends = ['tagsArr', 'navInfo', 'authorInfo'];
 
 	function getTagsArrAttribute()
 	{
@@ -24,5 +24,9 @@ class Posts extends Model
 	function getNavInfoAttribute()
 	{
 		return Nav::find($this->navId);
+	}
+
+	function getAuthorInfoAttribute () {
+		return User::find($this->author);
 	}
 }

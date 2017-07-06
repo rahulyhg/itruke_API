@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use App\Models\Nav;
 use App\Models\Posts;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -94,5 +95,32 @@ class AdminController extends Controller
 			$info->save();
 		}
 		return success();
+	}
+
+	function getUser(Request $request) {
+		return success(User::all());
+	}
+
+	function deleteNav (Request $request) {
+		$id = $request->input('id');
+		$count = Posts::where('navId', $id)->count();
+		if ($count > 0) {
+			return error('该分类下有文章,不支持删除');
+		}
+		Nav::where('id', $id)->delete();
+		return success();
+	}
+
+	function postUpload (Request $request) {
+		$file = $request->file('file');
+		if(!empty($file) && $file->isValid()){
+			$file_name = md5_file($file->getRealPath());
+			if(!file_exists(getenv('UPLOAD_DIR').$file_name)){
+				$file->move(getenv('UPLOAD_DIR'),$file_name);
+			}
+			return success(['url'=>getenv('FILE_PATH').$file_name]);
+		}else{
+			return error(500,'请选择图片');
+		}
 	}
 }
