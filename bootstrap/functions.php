@@ -36,9 +36,6 @@ if (! function_exists('addRoute')) {
 					}
 					foreach($actions as $a) {
 						if (strpos($v, $a) === 0) {
-							$app->options(strtolower($ctr).'/'.snake_case(ltrim($v, $a)), function () {
-								return response('', 200);
-							});
 							$app->$a(strtolower($ctr).'/'.snake_case(ltrim($v, $a)), $ctr.'Controller@'.camel_case($a.'_'.ltrim($v, $a)));
 						}
 					}
