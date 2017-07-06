@@ -54,4 +54,45 @@ class AdminController extends Controller
 		$id = Tag::where('name', '<>', $name)->insertGetId(['name' => $name]);
 		return success(['id' => $id]);
 	}
+
+	function postPosts(Request $request) {
+		$title = $request->input('title');
+		$content = $request->input('content');
+		$desc = $request->input('desc');
+		$tags = json_encode($request->input('tags'));
+		$imgs = json_encode($request->input('imgs'));
+		$navId = $request->input('navId');
+		$author = $request->input('author');
+		Posts::insert(['title'=>$title, 'content'=>$content, 'desc'=>$desc, 'tags'=>$tags, 'imgs'=>$imgs, 'navId'=>$navId, 'author'=>$author]);
+		return success();
+	}
+
+	function postNav(Request $request) {
+		$name = $request->input('name');
+		$pid = $request->input('pid');
+		if (empty($name) || empty($pid)) {
+			return error('请完整填写');
+		}
+		$has = Nav::where('name', $name)->first();
+		if ($has && $has->id) {
+			return error('已经存在的分类', 500);
+		}
+		Nav::insert(['name'=>$name, 'pid'=>$pid]);
+	}
+
+	function putNav(Request $request) {
+		$name = $request->input('name');
+		$pid = $request->input('pid');
+		$id = $request->input('id');
+		if (empty($name) || empty($pid)) {
+			return error('请完整填写');
+		}
+		$info = Nav::find($id);
+		if (!empty($info)) {
+			$info->name = $name;
+			$info->pid = $pid;
+			$info->save();
+		}
+		return success();
+	}
 }
