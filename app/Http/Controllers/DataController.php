@@ -18,6 +18,9 @@ class DataController extends Controller
     }
 
     function getPosts(Request $request) {
+        if (!empty($request->input('id'))) {
+            return success(Posts::find($request->input('id')));
+        }
         return success(Posts::paginate(10));
     }
 
