@@ -21,7 +21,7 @@ class DataController extends Controller
         if (!empty($request->input('id'))) {
             return success(Posts::find($request->input('id')));
         }
-        return success(Posts::paginate(10));
+        return success(Posts::orderBy('addTime', 'desc')->paginate(10));
     }
 
     function getTag(Request $request) {

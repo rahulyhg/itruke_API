@@ -34,7 +34,7 @@ class AdminController extends Controller
 		if (!empty($id)) {
 			return success(Posts::find($id));
 		}
-		return success(Posts::paginate($page_size));
+		return success(Posts::orderBy('addTime', 'desc')->paginate($page_size));
 	}
 
 	function getTag(Request $request) {
@@ -65,6 +65,19 @@ class AdminController extends Controller
 		$navId = $request->input('navId');
 		$author = $request->input('author');
 		Posts::insert(['title'=>$title, 'content'=>$content, 'desc'=>$desc, 'tags'=>$tags, 'imgs'=>$imgs, 'navId'=>$navId, 'author'=>$author]);
+		return success();
+	}
+
+	function putPosts(Request $request) {
+		$title = $request->input('title');
+		$content = $request->input('content');
+		$desc = $request->input('desc');
+		$tags = json_encode($request->input('tags'));
+		$imgs = json_encode($request->input('imgs'));
+		$navId = $request->input('navId');
+		$author = $request->input('author');
+		$id = $request->get('id');
+		Posts::where('id', $id)->update(['title'=>$title, 'content'=>$content, 'desc'=>$desc, 'tags'=>$tags, 'imgs'=>$imgs, 'navId'=>$navId, 'author'=>$author]);
 		return success();
 	}
 
