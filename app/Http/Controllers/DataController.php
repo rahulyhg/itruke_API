@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Link;
 use App\Models\Nav;
 use App\Models\Posts;
 use App\Models\Tag;
@@ -25,8 +26,15 @@ class DataController extends Controller
     }
 
     function getTag(Request $request) {
-        $id = $request->id;
+        $id = $request->get('id');
         $info = Tag::find($id);
-        return success($info);
+        if (!empty($id))
+            return success($info);
+        else
+            return success(Tag::orderBy('addTime','desc')->get());
+    }
+
+    function getLink(Request $request) {
+        return success(Link::orderBy('timestamp')->get());
     }
 }
