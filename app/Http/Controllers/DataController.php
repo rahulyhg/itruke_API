@@ -35,6 +35,6 @@ class DataController extends Controller
     }
 
     function getLink(Request $request) {
-        return success(Link::orderBy('timestamp')->get());
+        return success(Link::where('status',2)->orderBy('timestamp')->get());
     }
 }

@@ -8,6 +8,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Models\Link;
 use App\Models\Nav;
 use App\Models\Posts;
 use App\Models\Tag;
@@ -35,6 +36,15 @@ class AdminController extends Controller
 			return success(Posts::find($id));
 		}
 		return success(Posts::orderBy('addTime', 'desc')->paginate($page_size));
+	}
+
+	function getLink(Request $request) {
+		$page_size = $request->input('page_size') ? $request->input('page_size') : 10;
+		$id = $request->input('id');
+		if (!empty($id)) {
+			return success(Link::find($id));
+		}
+		return success(Link::orderBy('timestamp')->paginate($page_size));
 	}
 
 	function getTag(Request $request) {
