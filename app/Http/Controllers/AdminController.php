@@ -66,6 +66,40 @@ class AdminController extends Controller
 		return success(['id' => $id]);
 	}
 
+	function postLink(Request $request) {
+		$title = $request->get('title');
+		$desc = $request->get('desc');
+		$url = $request->get('url');
+		$status = $request->get('status');
+		if (empty($title) || empty($url)) {
+			return error('url和title必须');
+		}
+		Link::insert(['title'=>$title, 'url'=>$url, 'status'=>$status, 'desc'=>$desc]);
+		return success();
+	}
+
+	function putLink (Request $request) {
+		$title = $request->get('title');
+		$desc = $request->get('desc');
+		$url = $request->get('url');
+		$status = $request->get('status');
+		if (empty($title) || empty($url)) {
+			return error('url和title必须');
+		}
+		Link::whereId($request->get('id'))->update(['title'=>$title, 'url'=>$url, 'status'=>$status, 'desc'=>$desc]);
+		return success();
+	}
+
+	function deleteLink(Request $request) {
+		Link::where('id',$request->get('id'))->delete();
+		return success();
+	}
+
+	function deletePosts(Request $request) {
+		Posts::where('id',$request->get('id'))->delete();
+		return success();
+	}
+
 	function postPosts(Request $request) {
 		$title = $request->input('title');
 		$content = $request->input('content');
