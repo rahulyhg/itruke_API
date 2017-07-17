@@ -33,7 +33,7 @@ class Posts extends Model
 
 	function getPrevInfoAttribute()
 	{
-		return DB::table('posts')->where('addTime', '>', $this->addTime)->select('id','title')->first();
+		return DB::table('posts')->where('addTime', '>', $this->addTime)->orderBy('addTime')->select('id','title')->first();
 	}
 
 	function getNextInfoAttribute()
