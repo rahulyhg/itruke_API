@@ -79,7 +79,7 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AuthServiceProvider::class);
+ $app->register(Jenssegers\Agent\AgentServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
