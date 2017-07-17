@@ -22,7 +22,12 @@ class DataController extends Controller
         if (!empty($request->input('id'))) {
             return success(Posts::find($request->input('id')));
         }
-        return success(Posts::orderBy('addTime', 'desc')->paginate(10));
+        $q = Posts::orderBy('addTime', 'desc');
+        $navId = $request->get('navId');
+        if (!empty($navId)) {
+            $q->where('navId', $navId);
+        }
+        return success($q->paginate(10));
     }
 
     function getTag(Request $request) {

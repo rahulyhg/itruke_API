@@ -9,12 +9,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Posts extends Model
 {
 	public $table = 'posts';
 	public $timestamps = false;
-	public $appends = ['tagsArr', 'navInfo', 'authorInfo'];
+	public $appends = ['tagsArr', 'navInfo', 'authorInfo', 'nextInfo', 'prevInfo'];
 
 	function getTagsArrAttribute()
 	{
@@ -28,5 +29,15 @@ class Posts extends Model
 
 	function getAuthorInfoAttribute () {
 		return User::find($this->author);
+	}
+
+	function getPrevInfoAttribute()
+	{
+		return DB::table('posts')->where('addTime', '>', $this->addTime)->select('id','title')->first();
+	}
+
+	function getNextInfoAttribute()
+	{
+		return DB::table('posts')->where('addTime', '<', $this->addTime)->orderBy('addTime','desc')->select('id','title')->first();
 	}
 }

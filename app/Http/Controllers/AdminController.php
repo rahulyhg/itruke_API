@@ -26,7 +26,14 @@ class AdminController extends Controller
 	}
 
 	function getNavList(Request $request) {
-		return success(Nav::all());
+		$list = Nav::all();
+		$ret = [];
+		foreach ($list as $l) {
+			if (empty(Nav::subNav($l->id))){
+				$ret[] = $l;
+			}
+		}
+		return success($ret);
 	}
 
 	function getPosts(Request $request) {
