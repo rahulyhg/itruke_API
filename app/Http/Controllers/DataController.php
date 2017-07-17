@@ -77,4 +77,10 @@ class DataController extends Controller
         }
         return success();
     }
+
+    function deleteReply (Request $request) {
+        $id = $request->get('id');
+        Reply::where('id',$id)->orWhere('pid',$id)->delete();
+        return success();
+    }
 }
