@@ -81,3 +81,59 @@ if (! function_exists('error'))
 		], $code);
 	}
 }
+
+
+if (! function_exists('http_post')) {
+	/**
+	 * @param $params
+	 *  -url 请求的uri
+	 *  -fileds 参数kk
+	 *  -header 设置的header
+	 * @param int $timeout
+	 * @return mixed
+	 * TODO 模拟post请求
+	 */
+	function http_post($params,$timeout=300) {
+		$url = @$params['url'];
+		$fields = @$params['fields'];
+		$header = @$params['header'];
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		if(!empty($header)) {
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+		}
+		if(!empty($fields)) {
+			curl_setopt($curl,CURLOPT_POSTFIELDS,$fields);
+		}
+		$data = curl_exec($curl);
+		@curl_close($curl);
+		return $data;
+	}
+}
+
+if (! function_exists('http_get')) {
+	/**
+	 * @param $url uri
+	 * @param int $timeout
+	 * @return mixed
+	 * TODO 模拟get请求
+	 */
+	function http_get($url,$timeout=300) {
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		$data = curl_exec($curl);
+		curl_close($curl);
+		return $data;
+	}
+}
