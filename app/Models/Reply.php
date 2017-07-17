@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Zhuzhichao\IpLocationZh\Ip;
 
 class Reply extends Model
 {
@@ -44,8 +45,7 @@ class Reply extends Model
 		if ($this->ip === '127.0.0.1') {
 			return '技术宅男子';
 		}
-		$res = http_get('http://ip.taobao.com/service/getIpInfo.php?ip='.$this->ip);
-		$res = json_decode($res);
-		return $res->data->region.' '.$res->data->city;
+		$res = Ip::find($this->ip);
+		return $res[1].' '.$res[2];
 	}
 }

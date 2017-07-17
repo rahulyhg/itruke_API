@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fccbe20469a431be83a630191ad4daf",
+    "content-hash": "8d6442adca3e5632b9490149d04127fc",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -1502,6 +1502,48 @@
             "time": "2017-01-23T04:29:33+00:00"
         },
         {
+            "name": "mylukin/ip2city",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mylukin/ip2city.git",
+                "reference": "c082dbf262c9fad401c90c07831e4b94df76ff44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mylukin/ip2city/zipball/c082dbf262c9fad401c90c07831e4b94df76ff44",
+                "reference": "c082dbf262c9fad401c90c07831e4b94df76ff44",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyLukin\\IP2City\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lukin",
+                    "email": "mylukin@gmail.com"
+                }
+            ],
+            "description": "ip to city for 17mon.cn",
+            "keywords": [
+                "17mon",
+                "IP",
+                "city",
+                "ip2city"
+            ],
+            "time": "2015-05-21T06:01:09+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "1.22.1",
             "source": {
@@ -2290,6 +2332,44 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "zhuzhichao/ip-location-zh",
+            "version": "v2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zhuzhichao/ip-location-zh.git",
+                "reference": "8cbe401de3a29c0b680365d7515a2468da8206d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zhuzhichao/ip-location-zh/zipball/8cbe401de3a29c0b680365d7515a2468da8206d8",
+                "reference": "8cbe401de3a29c0b680365d7515a2468da8206d8",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zhuzhichao\\IpLocationZh\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zhuzhichao",
+                    "email": "me@zhuzhichao.com"
+                }
+            ],
+            "description": "get the ip's true location with Chinese",
+            "keywords": [
+                "Chinese",
+                "IP",
+                "location"
+            ],
+            "time": "2017-01-17T03:06:02+00:00"
         }
     ],
     "packages-dev": [
@@ -3767,7 +3847,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "mylukin/ip2city": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

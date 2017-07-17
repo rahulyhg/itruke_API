@@ -8,7 +8,9 @@
         "php": ">=5.6.4",
         "laravel/lumen-framework": "5.4.*",
         "vlucas/phpdotenv": "~2.2",
-        "jenssegers/agent": "^2.5"
+        "jenssegers/agent": "^2.5",
+        "zhuzhichao/ip-location-zh": "^2.2",
+        "mylukin/ip2city": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
