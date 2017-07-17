@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Link;
 use App\Models\Nav;
 use App\Models\Posts;
+use App\Models\Reply;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -41,5 +42,10 @@ class DataController extends Controller
 
     function getLink(Request $request) {
         return success(Link::where('status',2)->orderBy('timestamp')->get());
+    }
+
+    function getReply(Request $request) {
+        $list = Reply::where('key', $request->get('key'))->orderBy('path')->orderBy('addTime', 'desc')->get();
+        return success($list);
     }
 }
