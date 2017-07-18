@@ -14,6 +14,7 @@ use App\Models\Posts;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -185,6 +186,16 @@ class AdminController extends Controller
 			return success(['url'=>getenv('FILE_PATH').$file_name]);
 		}else{
 			return error(500,'请选择图片');
+		}
+	}
+
+	function postLogin (Request $request) {
+		if (md5($request->get('password')) == '667bfb2d66fa79699ee2ace21d1863af') {
+			$token = Cache::has('token') ? Cache::get('token') : md5(time());
+			Cache::add('token', $token, 60);
+			return success($token);
+		} else {
+			return error('login error');
 		}
 	}
 }
