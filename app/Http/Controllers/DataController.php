@@ -27,8 +27,17 @@ class DataController extends Controller
         }
         $q = Posts::orderBy('addTime', 'desc');
         $navId = $request->get('navId');
+        $tagId = $request->get('tagId');
         if (!empty($navId)) {
             $q->where('navId', $navId);
+        }
+        if (!empty($tagId)) {
+            $q->where(function ($query) use ($tagId) {
+                $query->where('tags', 'like', '['.$tagId.',%')
+                    ->orWhere('tags', 'like', '%,'.$tagId.',%')
+                    ->orWhere('tags', 'like', '%,'.$tagId.']')
+                    ->orWhere('tags', '['.$tagId.']');
+            });
         }
         return success($q->paginate(10));
     }
