@@ -7,6 +7,7 @@ use App\Models\Nav;
 use App\Models\Posts;
 use App\Models\Reply;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Facades\Agent;
 
@@ -46,7 +47,16 @@ class DataController extends Controller
     }
 
     function getReply(Request $request) {
-        $list = Reply::where('key', $request->get('key'))->orderBy('path')->orderBy('addTime', 'desc')->get();
+        $list = Reply::where('key',$request->get('key'))->where('pid', 0)->orderBy('addTime', 'desc')->get();
+        foreach($list as &$l) {
+            $id = $l->id;
+            $l->sub = Reply::where('key', $request->get('key'))->where('id','<>',$id)->where(function ($q) use ($id) {
+                $q->where('path','like', '%,'.$id)
+                    ->orWhere('path', 'like', '%,'.$id.',%');
+            })->orderBy('path')->get();
+            unset($l);
+        }
+//        $list = Reply::where('key', $request->get('key'))->orderBy('path')->orderBy('addTime', 'desc')->get();
         return success($list);
     }
 
@@ -61,7 +71,18 @@ class DataController extends Controller
         $ip = $request->getClientIp();
         $content = $request->get('content');
         $key = $request->get('key');
-        $userId = $request->userId;
+
+        $openid = $request->get('openid');
+        $avatar = $request->get('avatar');
+        $nick = $request->get('nick');
+
+        $user = User::where('openid', $openid)->first();
+        if (empty($user)) {
+            $userId = User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid]);
+        } else {
+            User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick]);
+            $userId = $user->id;
+        }
 
         $brower = Agent::browser();
         $v1 = Agent::version($brower);
@@ -80,7 +101,7 @@ class DataController extends Controller
 
     function deleteReply (Request $request) {
         $id = $request->get('id');
-        Reply::where('id',$id)->orWhere('pid',$id)->delete();
+        Reply::where('path','like', '%,'.$id)->orWhere('path', 'like', '%,'.$id.',%')->delete();
         return success();
     }
 }
