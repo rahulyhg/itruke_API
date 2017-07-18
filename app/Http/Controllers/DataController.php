@@ -104,4 +104,23 @@ class DataController extends Controller
         Reply::where('path','like', '%,'.$id)->orWhere('path', 'like', '%,'.$id.',%')->delete();
         return success();
     }
+
+    function postUser (Request $request) {
+        $openid = $request->get('openid');
+        $avatar = $request->get('avatar');
+        $nick = $request->get('nick');
+        $url = $request->get('url');
+        $user = User::where('openid', $openid)->first();
+        if (empty($user)) {
+            User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid, 'url'=>$url]);
+        } else {
+            User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick, 'url'=>$url]);
+        }
+        return success();
+    }
+
+    function getUser (Request $request) {
+        $list = User::orderBy('addTime', 'desc')->get();
+        return success($list);
+    }
 }
