@@ -15,7 +15,7 @@ class Posts extends Model
 {
 	public $table = 'posts';
 	public $timestamps = false;
-	public $appends = ['tagsArr', 'navInfo', 'authorInfo', 'nextInfo', 'prevInfo'];
+	public $appends = ['tagsArr', 'navInfo', 'authorInfo', 'nextInfo', 'prevInfo', 'replyCount'];
 
 	function getTagsArrAttribute()
 	{
@@ -39,5 +39,9 @@ class Posts extends Model
 	function getNextInfoAttribute()
 	{
 		return DB::table('posts')->where('addTime', '<', $this->addTime)->orderBy('addTime','desc')->select('id','title')->first();
+	}
+
+	function getReplyCountAttribute() {
+		return Reply::where('key', $this->id)->where('pid', 0)->count();
 	}
 }

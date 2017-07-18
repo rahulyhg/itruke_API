@@ -23,7 +23,9 @@ class DataController extends Controller
 
     function getPosts(Request $request) {
         if (!empty($request->input('id'))) {
-            return success(Posts::find($request->input('id')));
+            $info = Posts::find($request->input('id'));
+            $info->view = $info->view + 1;
+            return success($info);
         }
         $q = Posts::orderBy('addTime', 'desc');
         $navId = $request->get('navId');
