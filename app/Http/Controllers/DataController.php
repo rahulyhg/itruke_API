@@ -25,6 +25,7 @@ class DataController extends Controller
         if (!empty($request->input('id'))) {
             $info = Posts::find($request->input('id'));
             $info->view = $info->view + 1;
+            $info->save();
             return success($info);
         }
         $q = Posts::orderBy('addTime', 'desc');
