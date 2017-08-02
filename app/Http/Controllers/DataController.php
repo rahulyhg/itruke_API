@@ -135,4 +135,14 @@ class DataController extends Controller
         $list = User::orderBy('addTime', 'desc')->get();
         return success($list);
     }
+
+    function postChat(Request $request) {
+        $content = $request->get('chat');
+        if (!$content) {
+            return error('请输入内容');
+        }
+        $url = 'http://127.0.0.1:2121?type=publish&content='.$content;
+        http_get($url);
+        return success();
+    }
 }
