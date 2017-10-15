@@ -80,6 +80,7 @@ $app->singleton(
 */
 
  $app->register(Jenssegers\Agent\AgentServiceProvider::class);
+$app->register(Overtrue\LaravelWechat\ServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
