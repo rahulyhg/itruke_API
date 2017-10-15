@@ -105,6 +105,7 @@ class DataController extends Controller
         $rid = Reply::insertGetId(['pid'=>$pid, 'key'=>$key,'level'=>$level, 'path'=>'', 'content'=>$content, 'userId'=>$userId, 'ip'=>$ip, 'os'=>$os, 'tool'=>$tool]);
         if ($pid == 0) {
             Reply::whereId($rid)->update(['path'=>'0,'.$rid]);
+            //send message to wechat
         } else {
             Reply::whereId($rid)->update(['path'=>$info->path.','.$rid]);
         }
@@ -138,11 +139,14 @@ class DataController extends Controller
 
     function postChat(Request $request) {
         $content = $request->get('chat');
-        if (!$content) {
-            return error('请输入内容');
-        }
-        $url = 'http://127.0.0.1:2121?type=publish&content='.$content;
-        http_get($url);
+        $data = [
+            'type' => 'publish',
+            'content' => json_encode($content)
+        ];
+        $url = 'http://127.0.0.1:2121';
+        $arr['url'] = $url;
+        $arr['fields'] = $data;
+        http_post($arr);
         return success();
     }
 }
