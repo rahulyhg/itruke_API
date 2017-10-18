@@ -87,12 +87,18 @@ class DataController extends Controller
         $openid = $request->get('openid');
         $avatar = $request->get('avatar');
         $nick = $request->get('nick');
+        $wxCode = $request->get('wxCode');
+        if ($wxCode) {
+            $wxopenid = DB::table('wxuser')->where('code', $wxCode)->value('openid');
+        } else {
+            $wxopenid = null;
+        }
 
         $user = User::where('openid', $openid)->first();
         if (empty($user)) {
-            $userId = User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid]);
+            $userId = User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid, 'wxopenid'=>$wxopenid]);
         } else {
-            User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick]);
+            User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick,'addTime'=>new \DateTime(), 'wxopenid'=>$wxopenid]);
             $userId = $user->id;
         }
 
@@ -105,9 +111,10 @@ class DataController extends Controller
         $rid = Reply::insertGetId(['pid'=>$pid, 'key'=>$key,'level'=>$level, 'path'=>'', 'content'=>$content, 'userId'=>$userId, 'ip'=>$ip, 'os'=>$os, 'tool'=>$tool]);
         if ($pid == 0) {
             Reply::whereId($rid)->update(['path'=>'0,'.$rid]);
-            //send message to wechat
+            WxController::sendMessage($userId, $rid);
         } else {
             Reply::whereId($rid)->update(['path'=>$info->path.','.$rid]);
+            WxController::sendMessage($userId, $rid);
         }
         return success();
     }
@@ -139,7 +146,7 @@ class DataController extends Controller
 
     function postChat(Request $request) {
         $content = $request->get('chat');
-        $data = [
+       $data = [
             'type' => 'publish',
             'content' => json_encode($content)
         ];
@@ -149,4 +156,9 @@ class DataController extends Controller
         http_post($arr);
         return success();
     }
+
+    function getUserOne (Request $request) {
+        return success(User::whereOpenid($request->get('openid'))->first());
+    }
+    
 }
