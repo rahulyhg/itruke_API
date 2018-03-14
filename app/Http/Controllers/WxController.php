@@ -43,7 +43,7 @@ class WxController extends Controller
 			$code = str_random(1);
 			$code .= $id;
 			$code .= str_random(6-strlen($code));
-			DB::table('wxUser')->insert(['openid'=>$openid, 'code'=>$code]);
+			DB::table('wxuser')->insert(['openid'=>$openid, 'code'=>$code]);
 			return $code;
 		}
 	}

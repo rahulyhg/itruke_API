@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Facades\Agent;
+use Illuminate\Support\Facades\DB;
 
 class DataController extends Controller
 {
@@ -90,15 +91,27 @@ class DataController extends Controller
         $wxCode = $request->get('wxCode');
         if ($wxCode) {
             $wxopenid = DB::table('wxuser')->where('code', $wxCode)->value('openid');
+            $haswx = User::where('wxopenid', $wxopenid)->first();
+            if ($haswx) {
+                $wxopenid = null;
+            }
         } else {
             $wxopenid = null;
         }
 
         $user = User::where('openid', $openid)->first();
         if (empty($user)) {
-            $userId = User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid, 'wxopenid'=>$wxopenid]);
+            if ($wxopenid) {
+                $userId = User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid, 'wxopenid'=>$wxopenid]);
+            } else {
+                $userId = User::insertGetId(['name'=>$nick, 'avatar'=>$avatar, 'openid'=>$openid]);
+            }
         } else {
-            User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick,'addTime'=>new \DateTime(), 'wxopenid'=>$wxopenid]);
+            if ($wxopenid) {
+                User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick,'addTime'=>new \DateTime(), 'wxopenid'=>$wxopenid]);
+            } else {
+                User::where('id',$user->id)->update(['avatar'=>$avatar, 'name'=>$nick,'addTime'=>new \DateTime()]);
+            }
             $userId = $user->id;
         }
 
@@ -160,5 +173,8 @@ class DataController extends Controller
     function getUserOne (Request $request) {
         return success(User::whereOpenid($request->get('openid'))->first());
     }
+
+    function getPay(){}
+    function postPay(){}
     
 }

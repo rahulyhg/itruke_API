@@ -13,5 +13,6 @@
 // see function `addRoute` at app/bootstrap/functions.php
 add_route('data');
 add_route('admin');
+add_route('github');
 $app->get('/wx', 'WxController@serve');
 $app->post('/wx', 'WxController@serve');

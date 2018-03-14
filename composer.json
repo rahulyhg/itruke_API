@@ -11,7 +11,8 @@
         "jenssegers/agent": "^2.5",
         "zhuzhichao/ip-location-zh": "^2.2",
         "mylukin/ip2city": "dev-master",
-        "overtrue/wechat": "^3.3"
+        "overtrue/wechat": "^3.3",
+        "overtrue/laravel-wechat": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
