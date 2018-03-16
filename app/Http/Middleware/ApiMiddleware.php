@@ -36,7 +36,7 @@ class ApiMiddleware
         }
         $ret = Domain::where('domain', $domain)->where('appid', $appid)->where('ruke', $ruke)->where('status', 2)->first();
         if (!$ret) {
-//            return error('Bye', 401);
+            return error('Bye', 401);
         }
         return $next($request);
     }
