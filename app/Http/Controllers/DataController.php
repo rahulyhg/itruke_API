@@ -174,6 +174,10 @@ class DataController extends Controller
         return success(User::whereOpenid($request->get('openid'))->first());
     }
 
+    function getUserById (Request $request) {
+        return success(User::find($request->get('id')));
+    }
+
     function getPay(){}
     function postPay(){}
     
