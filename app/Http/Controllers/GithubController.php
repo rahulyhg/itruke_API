@@ -69,9 +69,4 @@ class GithubController
 			return redirect($back.'?uid='.$user_id);
 		}
 	}
-
-	function getAccessToken(Request $request)
-	{
-		dd($request->all());
-	}
 }

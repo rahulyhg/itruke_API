@@ -180,5 +180,5 @@ class DataController extends Controller
 
     function getPay(){}
     function postPay(){}
-    
+
 }
