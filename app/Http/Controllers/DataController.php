@@ -9,6 +9,7 @@ use App\Models\Reply;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Agent\Facades\Agent;
 use Illuminate\Support\Facades\DB;
 
@@ -176,6 +177,13 @@ class DataController extends Controller
 
     function getUserById (Request $request) {
         return success(User::find($request->get('id')));
+    }
+
+    function getUserByCache (Request $request) {
+        $t = $request->get('t');
+        $id = Cache::get($t);
+        Cache::forget($t);
+        return success(User::find($id));
     }
 
     function getPay(){}

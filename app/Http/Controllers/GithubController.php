@@ -66,7 +66,9 @@ class GithubController
 			} else {
 				$user_id = $has_user->id;
 			}
-			return redirect($back.'?uid='.$user_id);
+			$t = time();
+			Cache::add($t, $user_id, 1);
+			return redirect($back.'?t='.$t);
 		}
 	}
 }
