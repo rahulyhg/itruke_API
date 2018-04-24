@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class GithubController
 {
@@ -68,6 +69,24 @@ class GithubController
 			}
 			$t = time();
 			Cache::add($t, $user_id, 1);
+			$arr = explode('?', $back);
+			if (isset($arr[1])) {
+				$params = explode('&', $arr[1]);
+				if (isset($params[1])) {
+					foreach($params as &$v) {
+						$lines = explode('=', $v);
+						if ($lines[0] == 't') {
+							$v = 't='.$t;
+						}
+						unset($v);
+					}
+					$back = $arr[0].'?'.implode('&', $params);
+				} else {
+					$back .= '&t='.$t;
+				}
+			} else {
+				$back .= '?t='.$t;
+			}
 			return redirect($back.'?t='.$t);
 		}
 	}
